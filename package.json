@@ -1,0 +1,22 @@
+{
+  "name": "underwater-images",
+  "productName": "Underwater",
+  "version": "0.0.1",
+  "description": "Underwater images",
+  "author": "rentzso",
+  "license": "MIT",
+  "scripts": {
+    "webpack": "webpack",
+    "watch": "webpack-dev-server --hot --inline"
+  },
+  "devDependencies": {
+    "rx": "^4.1.0",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.15.1"
+  },
+  "private": true,
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-ui-router": "^0.3.1"
+  }
+}

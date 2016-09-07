@@ -1,0 +1,6 @@
+<div class="">
+  {{$ctrl.imageCount}}
+</div>
+<a href="#" ng-click="$ctrl.page = $ctrl.page + 1">next</a>
+<a href="#" ng-click="$ctrl.page = $ctrl.page - 1">prev</a>
+<uwi-image ng-repeat="image in $ctrl.paging($ctrl.page, 100)" image="image"></uwi-image>
