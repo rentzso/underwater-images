@@ -4,6 +4,14 @@ const angular = require('angular');
 const app = angular.module('app', [require('angular-ui-router')]);
 require('./directives/imageList.js');
 require('./directives/image.js');
+require('./directives/onload.js');
+
+require('../css/global.css');
+
+require('../partials/image.html');
+require('../partials/imageList.html');
+require('../partials/main.html');
+
 document.addEventListener('DOMContentLoaded', boot);
 
 function boot() {

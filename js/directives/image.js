@@ -12,5 +12,7 @@ app.component('uwiImage',{
 });
 
 function uwiImageController() {
-
+  /*jshint validthis: true */
+  const ctrl = this;
+  ctrl.loaded = false;
 }

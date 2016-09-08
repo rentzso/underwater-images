@@ -1,0 +1,15 @@
+.image {
+  margin: 10px;
+  border: 1px solid black;
+}
+
+.slideshow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.thumbnail {
+  max-height: 200px;
+  max-width: 200px;
+}
