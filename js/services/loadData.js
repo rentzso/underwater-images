@@ -16,12 +16,21 @@ function uwiStorage(ajaxQueues, uwiConfig) {
     loadContent(res.data);
   });
   const locations = {};
+  const places = [];
   const _images = [];
   let lenJpegs = -1;
+  const extremes = {
+    maxLatitude: -Infinity,
+    minLatitude:  Infinity,
+    maxLongitude: -Infinity,
+    minLongitude: Infinity
+  };
   return {
     imageList: imageList,
     locations: locations,
-    isLoaded: isLoaded
+    isLoaded: isLoaded,
+    extremes: extremes,
+    places: places
   };
 
   function loadContent(content){
@@ -30,6 +39,19 @@ function uwiStorage(ajaxQueues, uwiConfig) {
     jpegs.forEach(function(f){
       if (f) {
         getOrCreateLocation(f).then(function(location){
+          const latitude = convertLatitude(location.latitude);
+          const longitude = convertLongitude(location.longitude);
+          location.coordinates = [longitude, latitude];
+          if (longitude > extremes.maxLongitude) {
+            extremes.maxLongitude = longitude;
+          } else if (longitude < extremes.minLongitude) {
+            extremes.minLongitude = longitude;
+          }
+          if (latitude > extremes.maxLatitude) {
+            extremes.maxLatitude = latitude;
+          } else if (latitude < extremes.minLongitude) {
+            extremes.minLatitude = latitude;
+          }
           const image = {
             location: location,
             path: [uwiConfig.baseURL, uwiConfig.dataURL, f].join('/'),
@@ -38,8 +60,14 @@ function uwiStorage(ajaxQueues, uwiConfig) {
                         f.replace(/\/([^/]*\.(jpg|jpeg|JPG|JPEG))/, '/thumbnail.$1')
                        ].join('/'),
           };
+          if (!places[location.name]){
+              places[location.name] = [];
+          }
+          places[location.name].push(image);
           _images.push(image);
         });
+      } else {
+        lenJpegs -= 1;
       }
     });
   }
@@ -53,7 +81,7 @@ function uwiStorage(ajaxQueues, uwiConfig) {
 
   function getOrCreateLocation(f) {
     const _id = f.split('/')[0];
-    if (!location[_id]) {
+    if (!locations[_id]) {
       return new Promise(function (resolve, reject){
         ajaxQueues.append({
           method: 'GET',
@@ -61,8 +89,8 @@ function uwiStorage(ajaxQueues, uwiConfig) {
         }).then(function(response){
           const parser = new DOMParser();
           const xmldoc = parser.parseFromString(response.data, 'text/xml');
-          location[_id] = _parseLocation(xmldoc);
-          resolve(location[_id]);
+          locations[_id] = _parseLocation(xmldoc);
+          resolve(locations[_id]);
         },
         function(error) {
           console.log(error);
@@ -73,7 +101,7 @@ function uwiStorage(ajaxQueues, uwiConfig) {
       });
     } else {
       return new Promise(function(resolve){
-        resolve(location[_id]);
+        resolve(locations[_id]);
       });
     }
   }
@@ -90,7 +118,20 @@ function uwiStorage(ajaxQueues, uwiConfig) {
   function _getTextForTag(xmldoc, tag) {
     return xmldoc.getElementsByTagName(tag)[0].childNodes[0].nodeValue;
   }
+  function convertLatitude(latitude){
+    const rx = /(.*)(N|S)(.*)/g;
+    const m = rx.exec(latitude);
+    const result = Number(m[1]) + Number(m[3])/60;
+    return m[2]==='N'?result:-result;
+  }
+  function convertLongitude(longitude){
+    const rx = /(.*)(W|E)(.*)/g;
+    const m = rx.exec(longitude);
+    const result = Number(m[1]) + Number(m[3])/60;
+    return m[2]==='E'?result:-result;
+  }
   function isLoaded(){
+    console.log([lenJpegs, _images.length]);
     return lenJpegs !== -1 && _images.length === lenJpegs;
   }
 }

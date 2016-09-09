@@ -1,8 +1,12 @@
-<div class="">
-  {{$ctrl.imageCount}}
+<div class="d3-map">
 </div>
-<a href="#" ng-click="$ctrl.page = $ctrl.page - 1">prev</a>
-<a href="#" ng-click="$ctrl.page = $ctrl.page + 1">next</a>
 <div class="slideshow">
 <uwi-image ng-repeat="image in $ctrl.paging($ctrl.page, 100)" image="image"></uwi-image>
+</div>
+<div class="footer">
+  <div class="">
+    {{$ctrl.imageCount}} images
+  </div>
+  <a href="#" ng-click="$ctrl.page = $ctrl.page - 1" ng-show="$ctrl.page > 1">prev</a>
+  <a href="#" ng-click="$ctrl.page = $ctrl.page + 1" ng-show="$ctrl.page * 100 < $ctrl.imageCount">next</a>
 </div>

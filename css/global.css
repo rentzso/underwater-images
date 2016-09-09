@@ -13,3 +13,20 @@
   max-height: 200px;
   max-width: 200px;
 }
+
+.boundary {
+  fill: #ddc;
+  stroke: #ddc;
+}
+svg {
+  background-color: #C2DFFF;
+}
+.place-label {
+  font-size: 10px;
+}
+.d3-location {
+  fill: blue;
+}
+.d3-location-selected {
+  fill: red;
+}
