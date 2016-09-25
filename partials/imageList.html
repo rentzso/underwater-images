@@ -1,12 +1,40 @@
-<div class="d3-map">
-</div>
-<div class="slideshow">
-<uwi-image ng-repeat="image in $ctrl.paging($ctrl.page, 100)" image="image"></uwi-image>
-</div>
-<div class="footer">
-  <div class="">
-    {{$ctrl.imageCount}} images
-  </div>
-  <a href="#" ng-click="$ctrl.page = $ctrl.page - 1" ng-show="$ctrl.page > 1">prev</a>
-  <a href="#" ng-click="$ctrl.page = $ctrl.page + 1" ng-show="$ctrl.page * 100 < $ctrl.imageCount">next</a>
+<div class="container">
+
+    <!-- /.row -->
+    <div class="row">
+      <div class="col-md-4 d3-map">
+        <!-- <img class="img-responsive" src="http://placehold.it/900x1640" alt=""> -->
+      </div>
+      <div class="col-md-8">
+      <!-- Projects Row -->
+        <div class="row" ng-repeat="i in [0,1,2]">
+            <div class="col-md-3 portfolio-item" ng-repeat="j in [0,1,2,3]" ng-show="i*4 + j + $ctrl.page * 12 < $ctrl.imageCount">
+                <uwi-image image="$ctrl.paging($ctrl.page, 12)[i*4 + j]"></uwi-image>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Pagination -->
+        <div class="row text-center">
+            <div class="col-lg-12">
+                <ul class="pagination">
+                    <li ng-show="$ctrl.firstPage - 5 > 0">
+                        <a href="#" ng-click="$ctrl.prevPageGroup()">&laquo;</a>
+                    </li>
+                    <li ng-class="{active:i + $ctrl.firstPage== $ctrl.page}" ng-repeat="i in [0, 1, 2, 3, 4]" ng-show="($ctrl.firstPage + i)*12 <= $ctrl.imageCount">
+                        <a href="#" ng-click="$ctrl.page = i + $ctrl.firstPage">{{i + $ctrl.firstPage}}</a>
+                    </li>
+                    <li ng-show="($ctrl.firstPage + 5)*12 <= $ctrl.imageCount">
+                        <a href="#" ng-click="$ctrl.nextPageGroup()">&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.row -->
+      </div>
+    </div>
+    <!-- /.row -->
+
 </div>
