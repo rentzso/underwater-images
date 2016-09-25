@@ -48,7 +48,17 @@ function uwiImageListController($scope, $interval, uwiStorage) {
     const end = start + sliceSize;
     return ctrl.images.slice(start, end);
   }
-
+  ctrl.prevPageGroup = prevPageGroup;
+  ctrl.firstPage = 1;
+  function prevPageGroup(){
+    ctrl.firstPage -= 5;
+    ctrl.page = ctrl.firstPage + 4;
+  }
+  ctrl.nextPageGroup = nextPageGroup;
+  function nextPageGroup(){
+    ctrl.firstPage += 5;
+    ctrl.page = ctrl.firstPage;
+  }
   function selectLocation(location) {
     $scope.$apply(function(){
       ctrl.images = location.images;
@@ -59,17 +69,17 @@ function uwiImageListController($scope, $interval, uwiStorage) {
 
   function loadD3() {
     console.log('called');
-    let width = 960,
-        height = 1160;
+    let width = 450,
+        height = 865;
 
     let svg = d3.select('.d3-map').append('svg')
-      .attr('width', width)
-      .attr('height', height);
-    let center = [-61.5, 15.5];
+      .attr('viewBox', '0 0 ' + width + ' ' + height)
+      .attr('preserveAspectRatio', 'none');
+    let center = [-59.0, 15.0];
     let projection = d3.geo.albers()
       .center(center)
       .rotate([10, 18, 15])
-      .scale(6700);
+      .scale(8000);
     //.translate([width / 2, height / 2]);
     let path = d3.geo.path()
       .projection(projection)
