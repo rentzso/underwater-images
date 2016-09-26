@@ -8,9 +8,10 @@ uwiConfig.$inject = [];
 
 function uwiConfig() {
   return {
-    baseURL: 'http://localhost:9201',
+    baseURL: 'http://underwater.scitran.io',
     thumbnailsURL: 'thumbnails',
-    dataURL: 'data',
-    locationFile: 'params.xml'
+    dataURL: 'Dataset',
+    locationFile: 'params.xml',
+    useThumbnails: false
   };
 }

@@ -54,12 +54,13 @@ function uwiStorage(ajaxQueues, uwiConfig) {
           }
           const image = {
             location: location,
-            path: [uwiConfig.baseURL, uwiConfig.dataURL, f].join('/'),
-            thumbnail: [uwiConfig.baseURL,
-                        uwiConfig.thumbnailsURL,
-                        f.replace(/\/([^/]*\.(jpg|jpeg|JPG|JPEG))/, '/thumbnail.$1')
-                       ].join('/'),
+            path: [uwiConfig.baseURL, uwiConfig.dataURL, f].join('/')
           };
+          image.thumbnail = uwiConfig.useThumbnails?[
+            uwiConfig.baseURL,
+            uwiConfig.thumbnailsURL,
+            f.replace(/\/([^/]*\.(jpg|jpeg|JPG|JPEG))/, '/thumbnail.$1')
+          ].join('/'):image.path;
           if (!places[location.name]){
               places[location.name] = [];
           }
